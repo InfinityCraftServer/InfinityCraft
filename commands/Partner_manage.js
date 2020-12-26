@@ -35,6 +35,6 @@ module.exports.run = async (bot, message, args) => {
 module.exports.config = {
     name: "partner",
     description: "Voeg een partner toe of verwijder er een",
-    aliases: [''],
+    aliases: [],
     permission: "ADMINISTRATOR"
 }

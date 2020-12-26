@@ -68,5 +68,4 @@ bot.on("message", async message => {
     if(commandfile) commandfile.run(bot,message,args)
 
 })
-console.log(process.env.token)
 bot.login(process.env.token);

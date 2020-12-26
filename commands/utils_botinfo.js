@@ -28,7 +28,7 @@ module.exports.run = async (bot, message, args) => {
             { name: 'Uptime', value: `${uptime}`}
         )
         .setTimestamp()
-        .setFooter("DonZ2H Community Bot")
+        .setFooter("InfinityCraft copyright 2020")
         m.delete()
         m.channel.send(pingembed)
     })
