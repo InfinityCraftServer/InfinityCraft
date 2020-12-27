@@ -85,12 +85,14 @@ async function check_server(message) {
                     } else {
                       try{
                         if(serverID.guild.id != row.value){
+                          console.log(serverID.guild.id + `ServerID` +row.value + `row.value`)
                             res(false)
                         } else {
                             res(true)
                         }
                       } catch{
                         console.log("ERR")
+                        console.log(err)
                         res(false)
                       }
                     }
