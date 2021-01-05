@@ -8,25 +8,25 @@ const sqlite = require('sqlite3').verbose();
 const bot = new Discord.Client({ partials: ['MESSAGE', 'CHANNEL', 'REACTION'] });
 bot.on('message', async message => {
     if ((message.author.bot || message.channel.id != "730533553821057106")) { return; }
-    if (await check_server(message) == false) {
-        message.delete()
+    // if (await check_server(message) == false) {
+    //     message.delete()
 
-        var workembed = new Discord.MessageEmbed()
-            .setTitle(message.author.username)
-            .setColor("RED")
-            .setThumbnail(message.author.displayAvatarURL())
-            .setTimestamp()
-            .setFooter("InfinityCraft copyright 2020")
-            .addFields(
-                { name: "Server niet gevonden", value: `Je mag alleen reclame maken voor de opgegeven partner server. Als je denkt dat dit een fout was, meld dit dan bij de owner! (Indien dit wel de goede server was, is de invite mogelijk ongeldig)` }
-            )
-        message.guild.channels.cache.get("756519548831662120").send(workembed)
-        message.guild.channels.cache.get("756519548831662120").send(`<@${message.author.id}>`).then(msg => {
-            msg.delete()
-            return;
-        })
-        return;
-    }
+    //     var workembed = new Discord.MessageEmbed()
+    //         .setTitle(message.author.username)
+    //         .setColor("RED")
+    //         .setThumbnail(message.author.displayAvatarURL())
+    //         .setTimestamp()
+    //         .setFooter("InfinityCraft copyright 2020")
+    //         .addFields(
+    //             { name: "Server niet gevonden", value: `Je mag alleen reclame maken voor de opgegeven partner server. Als je denkt dat dit een fout was, meld dit dan bij de owner! (Indien dit wel de goede server was, is de invite mogelijk ongeldig)` }
+    //         )
+    //     message.guild.channels.cache.get("756519548831662120").send(workembed)
+    //     message.guild.channels.cache.get("756519548831662120").send(`<@${message.author.id}>`).then(msg => {
+    //         msg.delete()
+    //         return;
+    //     })
+    //     return;
+    // }
 
     var cooldowntime = "1440.0"
     var cooldowns = await check_cooldown(message.author.id, cooldowntime)
@@ -57,7 +57,6 @@ bot.on('message', async message => {
 });
 
 async function getServerId(inviteCode) {
-    console.log("test")
     let result = await fetch(`https://valiblackdragon-discord.glitch.me/?code=${inviteCode}`);
     let json = await result.json();
     return json
@@ -66,10 +65,11 @@ async function check_server(message) {
     return new Promise(async (res) => {
         var linkBase = "https://discord.gg/"
         var messageArray = message.content.split(" ");
-
         for (let i = 0; i < messageArray.length; i++) {
-            const Possibleinvite = messageArray[i];
-            if (Possibleinvite.includes(linkBase)) {
+            var Possibleinvite = messageArray[i];
+            console.log(Possibleinvite)
+            if (Possibleinvite.includes("discord.gg")) {
+              console.log(Possibleinvite + "Trigger")
                 inviteCode = Possibleinvite.replace(linkBase, "")
                 let serverID = await getServerId(inviteCode)
                 let query = `SELECT serverID AS value FROM partnerservers WHERE userID = ${message.author.id}`;
@@ -93,7 +93,9 @@ async function check_server(message) {
                       } catch{
                         console.log("ERR")
                         console.log(err)
-                        res(false)
+                        res(true)
+                        message.guild.channels.cache.get("756519548831662120").send(`<@478260337536139264> Error met partner check. Partner bericht word doorgelaten. We proberen het opnieuw`)
+                        message.guild.channels.cache.get("756519548831662120").send(err)
                       }
                     }
 
