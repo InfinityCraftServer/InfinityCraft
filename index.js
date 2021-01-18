@@ -54,18 +54,26 @@ fs.readdir("./events/", (err, files) => {
 });
 
 
-// commandhandler
 bot.on("message", async message => {
-    if(message.author.bot || message.channel.type === "dm") return;
+    if (message.author.bot || message.channel.type === "dm") return;
 
     let prefix = botsettings.prefix;
     let messageArray = message.content.split(" ");
     let cmd = messageArray[0];
     let args = messageArray.slice(1);
 
-    if(!message.content.startsWith(prefix)) return;
+    if (!message.content.startsWith(prefix)) return;
     let commandfile = bot.commands.get(cmd.slice(prefix.length)) || bot.commands.get(bot.aliases.get(cmd.slice(prefix.length)))
-    if(commandfile) commandfile.run(bot,message,args)
+    if (commandfile) {
+        if (commandfile.config.permission == "DEVELOPER" && await checkdevs.check(message.author.id) == false) {
+            message.reply("Only bot developers can access this command")
+            return;
+        } else {
+            commandfile.run(bot, message, args)
+        }
 
+    } else {
+        message.reply("This command is not found!")
+    }
 })
 bot.login(process.env.token);
