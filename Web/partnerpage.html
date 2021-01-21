@@ -1,0 +1,178 @@
+<body class="body" style = "margin:0 auto;width:75%;text-align:left">
+    
+    <h1>
+        <center>InfinityCraft partner request</center>
+    </h1>
+
+    <h3>
+        <center> Bedankt voor je interesse in een partnership met InfinityCraft. Voor we een partnership aangaan, hebben
+            wij een paar regels </center>
+    </h3>
+    <p>&nbsp;</p>
+    <ul>
+        <li> Degeme die de partnership aanvraagt krijgt de role. </li>
+        <li> Je mag alleen reclame maken voor de server waar wij partner mee zijn. </li>
+        <li> Je mag alleen reclame maken voor in het daarvoor bestemde kanaal. </li>
+        <li> Je mag geen reclame maken in de DM van andere members. </li>
+        <li> Je mag niet je links vervormen om onze bot te bypassen</li>
+    </ul>
+    <p>
+        <center><i>Het niet naleven van de regels kan resulteren in een partner-strike. Bij 3 partner strikes word het
+                partnership stop gezet</i>
+    </p>
+    <button type='submit' class="login log-button" style="color: white" onclick="openModal()">Partnerverzoek
+        indienen</button>
+    <div id="ConfirmScreen" class="modal">
+
+        <!-- Modal content -->
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <p style=color:white>Graag de volgende dingen invullen om een partnerverzoek in te dienen</p>
+            <img id="servericon" src="" style="border-radius: 50%;">
+            <p>
+                <p>
+                    <label class="Label">Partner code. Deze is te vinden in het ticket.</label>
+                    <input class="label" type='text' name='partnercode' placeholder='Vind je partner code in je ticket'
+                        id='partnercode' required>
+                </p>
+                <p>
+                    <label class="Label">Akkoord</label>
+                    <input type="checkbox" id="scales" name="scales" >
+                    <label for="scales">Met het aanchecken van de box ga je akkoord met onze regels en voorwaarden, zoals vermeld op de vorige pagina. InfinityCraft is gemachtigd deze voorwaarden aan te passen en is niet verplicht de gebruikers hierover te waarschuwen</label>
+                    <button type='submit' class="login log-button" style="color: white"
+                    onclick='CheckData()'>Indienen</button>
+                </p>
+            </p>
+        </div>
+
+    </div>
+
+</body>
+
+<script>
+
+    async function openModal() {
+        modal.style.display = "block";
+    }
+    async function CheckData(){
+        if(document.getElementById("partnercode").value == ""){
+            alert("Geef je partner code op")
+            return
+        }
+        if(!document.getElementById("scales").checked){
+            alert("Je moet met de voorwaarden akkoord gaan om het partnership in te dienen")
+            return
+        }
+        let result = await fetch("/verifyrequest?id="+ document.getElementById("partnercode").value);
+        let json = await result.json();
+        if(json.valid == "false"){
+            alert("Partner request niet gevonden")
+            return
+        }
+        window.location.replace("/partneraanvraag?id=" + document.getElementById("partnercode").value);
+
+    }
+    var modal = document.getElementById("ConfirmScreen");
+
+    // Get the button that opens the modal
+    var btn = document.getElementById("myBtn");
+
+    // Get the <span> element that closes the modal
+    var span = document.getElementsByClassName("close")[0];
+
+    // When the user clicks on <span> (x), close the modal
+    span.onclick = function () {
+        modal.style.display = "none";
+    }
+</script>
+
+<style>
+    .label {
+        display: block;
+        text-align: center;
+        color: aliceblue;
+    }
+
+    .body {
+        background-color: #404040;
+        color: whitesmoke;
+    }
+
+    .log-button {
+        background-color: #606060;
+    }
+    input,
+    .btn {
+        background-color: #606060;
+        width: 100%;
+        padding: 12px;
+        border: none;
+        border-radius: 4px;
+        margin: 5px 0;
+        opacity: 0.85;
+        display: inline-block;
+        font-size: 17px;
+        line-height: 20px;
+    }
+    .login {
+        color: #101010;
+        background-color: #404040;
+        width: 10%;
+        padding: 12px;
+        border: 1;
+        border-radius: 4px;
+        margin: 5px 0;
+        opacity: 0.85;
+        display: inline-block;
+        font-size: 17px;
+        line-height: 20px;
+    }
+
+    .modal {
+        text-align: center;
+        display: none;
+        /* Hidden by default */
+        position: fixed;
+        /* Stay in place */
+        z-index: 1;
+        /* Sit on top */
+        padding-top: 100px;
+        /* Location of the box */
+        left: 0;
+        top: 0;
+        width: 100%;
+        /* Full width */
+        height: 100%;
+        /* Full height */
+        overflow: auto;
+        /* Enable scroll if needed */
+        background-color: rgb(0, 0, 0);
+        /* Fallback color */
+        background-color: rgba(0, 0, 0, 0.4);
+        /* Black w/ opacity */
+    }
+
+    /* Modal Content */
+    .modal-content {
+        background-color: gray;
+        margin: auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 80%;
+    }
+
+    /* The Close Button */
+    .close {
+        color: white;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+    }
+
+    .close:hover,
+    .close:focus {
+        color: #000;
+        text-decoration: none;
+        cursor: pointer;
+    }
+</style>

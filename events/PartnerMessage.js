@@ -69,9 +69,7 @@ async function check_server(message) {
         var messageArray = message.content.split(" ");
         for (let i = 0; i < messageArray.length; i++) {
             var Possibleinvite = messageArray[i];
-            console.log(Possibleinvite)
             if (Possibleinvite.includes("discord.gg")) {
-              console.log(Possibleinvite + "Trigger")
                 inviteCode = Possibleinvite.replace(linkBase, "")
                 let serverID = await getServerId(inviteCode)
                 let query = `SELECT serverID AS value FROM partnerservers WHERE userID = ${message.author.id}`;
@@ -79,10 +77,11 @@ async function check_server(message) {
                 db.get(query, (err, row) => {
                     if (err) {
                         console.log(err)
-                        res(false)
+                        res(true)
                     }
                     if (row == undefined) {
-                        res(false);
+                        db.run(`INSERT OR REPLACE INTO partnerservers VALUES("${message.author.id}", "${serverID}")`)
+                        res(true);
                         return;
                     } else {
                       try{
